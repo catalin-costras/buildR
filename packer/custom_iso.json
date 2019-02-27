@@ -1,0 +1,69 @@
+{
+  "_comment": "Create custom iso (virtualbox) - CentOS 7.6",
+  "variables": {
+    "PACKER_BOX_NAME": "packer-centos-7-x86_64",
+    "ISO_FILE": "./iso_file/CentOS-7-x86_64-Minimal-1810.iso"
+
+  },
+
+  "builders": [
+    {
+        "type": "virtualbox-iso",
+        "boot_command": [
+          "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+        ],
+        "boot_wait": "10s",
+        "disk_size": 81920,
+        "guest_os_type": "RedHat_64",
+        "headless": true,
+        "http_directory": "http",
+        "iso_url": "{{user `ISO_FILE`}}",
+        "iso_checksum_type": "md5",
+        "iso_checksum": "bd43d41e01c2a46b3cb23eb9139dce4b",
+        "ssh_username": "3pg",
+        "ssh_password": "3pg",
+        "ssh_port": 22,
+        "ssh_wait_timeout": "10000s",
+        "shutdown_command": "echo '3pg'|sudo -S /sbin/halt -h -p",
+        "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+        "virtualbox_version_file": ".vbox_version",
+        "vm_name": "{{user `PACKER_BOX_NAME`}}",
+        "vboxmanage": [
+            [
+            "modifyvm",
+            "{{.Name}}",
+            "--memory",
+            "512"
+            ],
+            [
+            "modifyvm",
+            "{{.Name}}",
+            "--cpus",
+            "2"
+            ]
+        ]
+    }
+],
+
+  "provisioners": [
+    {
+        "type": "shell",
+        "execute_command": "echo '3pg'|sudo -S sh '{{.Path}}'",
+        "override": {
+          "virtualbox-iso": {
+            "scripts": [
+              "scripts/virtualbox.sh"
+            ]
+          }
+        }
+    }
+  ],
+
+  "post-processors": [
+    {
+      "type": "manifest",
+      "output": "manifest.json",
+      "strip_path": true
+    }
+  ]
+}
