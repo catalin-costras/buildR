@@ -11,6 +11,7 @@ Build RPMs with docker and packer them
 A brief up and running. More details can be taken from: jc21/docker-rpmbuild-centos7
 
 ## Build RPMS
+The structure has to be already create in the working directory. 
 ### Build RPMs as per 
 ```bash
 docker run \
