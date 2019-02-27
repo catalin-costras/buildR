@@ -2,3 +2,4 @@ packer/output-virtualbox-iso
 packer/packer_cache
 packer/iso_file
 packer/manifest.json
+packer/builds

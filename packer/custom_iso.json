@@ -17,7 +17,10 @@
         "guest_os_type": "RedHat_64",
         "headless": true,
         "http_directory": "http",
-        "iso_url": "{{user `ISO_FILE`}}",
+        "iso_urls": [
+          "{{user `ISO_FILE`}}",
+          "http://mirrors.virtono.com/centos/7.6.1810/isos/x86_64/CentOS-7-x86_64-Minimal-1810.iso"
+        ],
         "iso_checksum_type": "md5",
         "iso_checksum": "bd43d41e01c2a46b3cb23eb9139dce4b",
         "ssh_username": "3pg",
@@ -60,10 +63,16 @@
   ],
 
   "post-processors": [
-    {
-      "type": "manifest",
-      "output": "manifest.json",
-      "strip_path": true
-    }
+    [
+      {
+        "output": "builds/{{.Provider}}-centos7.box",
+        "type": "vagrant"
+      },
+      {
+        "type": "manifest",
+        "output": "manifest.json",
+        "strip_path": true
+      }
+    ]
   ]
 }
