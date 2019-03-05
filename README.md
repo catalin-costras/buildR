@@ -1,5 +1,5 @@
 # buildR
-Build RPMs with docker and packer them
+Build RPMs with docker and packer them (deleteme)
 
 ## Techs
 - packer: custom iso creation
